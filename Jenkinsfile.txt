@@ -1,0 +1,49 @@
+pipeline { 
+    agent any 
+    
+    stages {
+        stage('Delete Working Folder') { 
+            steps { 
+                echo 'Delete Working Folder' 
+                bat label: '', script: 'del "C:\\VirtECS\\768\\Inbound" /Q /S'
+				
+            }
+        }
+		
+		stage('Move from SystemInbound > Baan folder to Inbound Working Folder') { 
+            steps { 
+                bat label: '', script: '@xcopy  /c /e /h  /r /k /v /y /d /i "C:\\VirtECS\\768\\SystemInbound\\Baan" "C:\\VirtECS\\768\\Inbound"'				
+			}
+        }
+		
+		stage('Move from SystemInbound > MesPro folder to Inbound Working Folder') { 
+            steps { 
+                bat label: '', script: '@xcopy  /c /e /h  /r /k /v /y /d /i "C:\\VirtECS\\768\\SystemInbound\\MesPro" "C:\\VirtECS\\768\\Inbound"'			
+			}
+        }
+		
+		stage('Move from SystemInbound > Tririga folder to Inbound Working Folder') { 
+            steps { 
+                bat label: '', script: '@xcopy  /c /e /h  /r /k /v /y /d /i "C:\\VirtECS\\768\\SystemInbound\\Tririga" "C:\\VirtECS\\768\\Inbound"'			
+			}
+        }
+		
+		
+		stage('Move from SystemInbound folder to Archive folder') { 
+            steps { 
+                bat label: '', script: '@xcopy  /c /e /h  /r /k /v /y /d /i "C:\\VirtECS\\768\\SystemInbound\\Baan" "C:\\VirtECS\\768\\SystemInbound\\Archive"'	
+				bat label: '', script: '@xcopy  /c /e /h  /r /k /v /y /d /i "C:\\VirtECS\\768\\SystemInbound\\MesPro" "C:\\VirtECS\\768\\SystemInbound\\Archive"'	
+				bat label: '', script: '@xcopy  /c /e /h  /r /k /v /y /d /i "C:\\VirtECS\\768\\SystemInbound\\Tririga" "C:\\VirtECS\\768\\SystemInbound\\Archive"'	
+			}
+        }
+		
+		stage('Delete Baan extracts in SystemInbound folder') { 
+            steps { 
+                bat label: '', script: 'del "C:\\VirtECS\\768\\SystemInbound\\Baan" /Q /S'
+            }
+        }
+		
+		
+       
+    }
+}
